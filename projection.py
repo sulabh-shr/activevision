@@ -1,8 +1,8 @@
 import numpy as np
 
-from parameters import *
-from coordinate_utils import generate_flat_xyz
-from tR_utils import camera_to_world_tR, inter_camera_tR
+from active_vision_utils.parameters import *
+from active_vision_utils.coordinate_utils import generate_flat_xyz
+from active_vision_utils.tR_utils import camera_to_world_tR, inter_camera_tR
 
 
 def project_xyz_to_camera(x_flat, y_flat, z_flat, center_x=cx,
