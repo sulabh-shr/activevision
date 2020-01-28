@@ -23,7 +23,6 @@ def generate_flat_xyz(depth_image):
     imh, imw = depth.shape
 
     x_grid, y_grid = np.meshgrid(np.arange(imw), np.arange(imh))
-    print(f'Each of the coordinate axes is of shape {x_grid.shape}')
 
     x_flat = x_grid.reshape(-1)
     y_flat = y_grid.reshape(-1)
@@ -76,7 +75,7 @@ def xy_to_index(xy, x_flat, y_flat, mode='n2'):
 
 
 def bbox_pixel_indices(bounding_box, x_flat, y_flat, z_flat,
-                       filter_depth=False):
+                       filter_depth=False, cluster_depth=True):
     """ Get indices of pixels inside the bounding box.
         Using boundaries of the bounding box, find the indices that correspond
         to pixels inside these boundaries in the flattened axes. Only find
@@ -108,11 +107,34 @@ def bbox_pixel_indices(bounding_box, x_flat, y_flat, z_flat,
 
     valid_x = np.logical_and((x_flat >= xmin), (x_flat <= xmax))
     valid_y = np.logical_and((y_flat >= ymin), (y_flat <= ymax))
+    valid_z = z_flat != 0
 
     if filter_depth:
-        valid_z = z_flat != 0
+
+        if cluster_depth:
+            bbox_pixels = np.logical_and.reduce(np.array((valid_x, valid_y)))
+        else:
+            bbox_pixels = np.logical_and.reduce(np.array((valid_x, valid_y, valid_z)))
+
+        bbox_z = z_flat[bbox_pixels]
+        num_bbox_z = len(bbox_z)
+        if cluster_depth:
+            bbox_z_centered = bbox_z[int(0.33*num_bbox_z):int(0.66*num_bbox_z)]
+            bbox_z = bbox_z_centered
+
+        z_mean = np.average(bbox_z)
+        z_std = np.std(bbox_z)
+        in_range_z1 = z_flat >= z_mean-1*z_std
+        in_range_z2 = z_flat <= z_mean+1*z_std
+
+        # z_q10, z_q90 = np.percentile(bbox_z, [10, 90])
+        # in_range_z1 = z_flat >= z_q10
+        # in_range_z2 = z_flat <= z_q90
+
+        all_and = np.logical_and.reduce(np.array((valid_x, valid_y, valid_z, in_range_z1, in_range_z2)))
+
         # all_and = np.logical_and(np.logical_and(valid_x, valid_y), valid_z)
-        all_and = np.logical_and.reduce(np.array((valid_x, valid_y, valid_z)))
+
     else:
         all_and = np.logical_and(valid_x, valid_y)
 
