@@ -5,8 +5,8 @@ from active_vision_utils.coordinate_utils import generate_flat_xyz
 from active_vision_utils.tR_utils import camera_to_world_tR, inter_camera_tR
 
 
-def project_xyz_to_camera(x_flat, y_flat, z_flat, center_x=cx,
-                          center_y=cy, focal_x=fx, focal_y=fy,
+def project_xyz_to_camera(x_flat, y_flat, z_flat, center_x,
+                          center_y, focal_x, focal_y,
                           filter_depth=False, rgb=None):
     """ Project xyz in image coordinate to camera coordinate system.
         This function assumes that xyz do not need to be checked for unusual
@@ -50,8 +50,8 @@ def project_xyz_to_camera(x_flat, y_flat, z_flat, center_x=cx,
     return pcloud, rgb
 
 
-def project_img_to_camera(image, depth, center_x=cx, center_y=cy, focal_x=fx,
-                          focal_y=fy, filter_depth=False, project_rgb=True):
+def project_img_to_camera(image, depth, center_x, center_y, focal_x,
+                          focal_y, filter_depth=False, project_rgb=True):
     """ Project 2d image to Camera coordinate.
 
     Parameters
@@ -108,8 +108,8 @@ def project_img_to_camera(image, depth, center_x=cx, center_y=cy, focal_x=fx,
     return pcloud, rgb
 
 
-def project_camera_to_2d(pcl, center_x=cx, center_y=cy,
-                         focal_x=fx, focal_y=fy):
+def project_camera_to_2d(pcl, center_x, center_y,
+                         focal_x, focal_y):
     z = pcl[2, :]
     x = pcl[0, :] * focal_x / z + center_x
     y = pcl[1, :] * focal_y / z + center_y
