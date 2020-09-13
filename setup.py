@@ -28,7 +28,7 @@ setup(
     url='https://github.com/sulabh-shr/activevision.git',
     license='BSD 2-clause',
     packages=find_packages(),
-    install_requires=['numpy', 'scipy', 'matplotlib', 'scikit-learn'],
+    install_requires=['numpy', 'scipy', 'matplotlib', 'scikit-learn', 'pandas'],
     python_requires='>=3',
     classifiers=[
         "Programming Language :: Python :: 3",
