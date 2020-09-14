@@ -49,14 +49,18 @@ def visualize_boxes_and_move(scene, box_type='instance', start_idx=0):
 
         img_path = scene_ann.img_name2path(scene=scene, name=img_name)
         img = Image.open(img_path)
-        boxes_dict = scene_ann.get_image_boxes(scene, img_name, box_type=box_type)
+        if box_type == 'instance':
+            boxes_dict = scene_ann.get_image_boxes(scene, img_name)
+        else:
+            boxes_dict = scene_ann.get_image_boxes(scene, img_name, box_type=box_type)
+
         bboxes = []
         labels = []
 
         if box_type == 'instance' or box_type == 'both':
             bboxes += list(boxes_dict['instance_boxes'])
             labels += boxes_dict['instance_names']
-        if box_type == 'category':
+        if box_type == 'category' or box_type == 'both':
             bboxes += list(boxes_dict['category_boxes'])
             labels += boxes_dict['category_names']
 

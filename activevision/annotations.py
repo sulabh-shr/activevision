@@ -94,7 +94,7 @@ class AVDAnnotations:
 
     def idx2image(self, scene, idx):
         scene_images = list(self.annotations[scene].keys())
-        if idx < len(scene_images):
+        if idx >= len(scene_images):
             raise IndexError(
                 f'Index {idx} is greater than number of images {len(scene_images)} in {scene}.')
 
@@ -223,7 +223,7 @@ class AVDCategoryAnns(AVDAnnotations):
         if box_type == 'instance' or box_type == 'both':
             output_dict.update(super().get_image_boxes(scene=scene, img_name=img_name))
 
-        if box_type == 'category':
+        if box_type == 'category' or box_type == 'both':
 
             assert scene in self.loaded_scenes, f'Specified scene is not loaded: {scene}'
             # Default empty values
