@@ -21,7 +21,7 @@ def visualize_boxes_and_move(scene, start_idx=0):
         'x': 'right'
     }
 
-    input_ = 0
+    input_ = start_idx
     fig, ax = plt.subplots(1, figsize=(16, 9))
 
     while True:
@@ -37,11 +37,11 @@ def visualize_boxes_and_move(scene, start_idx=0):
                 next_img = scene_ann.get_neighbor_image(scene=scene, img_name=img_name,
                                                         direction=dir)
                 if next_img == '':
-                    print(f'No image available in direction: {dir}. Try another command.')
+                    print(f'No image available in direction: **{dir}**! Try another command.')
                 else:
                     img_name = next_img
             else:
-                print(f'Invalid input: {input_}\nPossible inputs:\n{input_map}')
+                print(f'Invalid input! Possible inputs:\n{input_map}')
                 print('Or input a number < number of images in current scene or "q" to Quit.')
 
         img_path = scene_ann.img_name2path(scene=scene, name=img_name)
@@ -53,10 +53,16 @@ def visualize_boxes_and_move(scene, start_idx=0):
         ax.set_title(img_name)
         plt.draw()
         plt.pause(0.01)
-        input_ = input('Enter direction: \n')
+        input_ = input('\nEnter command:  ')
 
 
 if __name__ == '__main__':
-    # import argparse
-    # args = argparse.ArgumentParser()
-    visualize_boxes_and_move(scene='Home_001_1')
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--scene', '-s', type=str, required=True,
+                        help='Name of scene to visualize.')
+    parser.add_argument('--idx', type=int, required=False, default=0,
+                        help='Index to start visualizations from.')
+    args = parser.parse_args()
+
+    visualize_boxes_and_move(scene=args.scene, start_idx=args.idx)
