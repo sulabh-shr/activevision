@@ -1,3 +1,7 @@
 __pycache__/
 
 .idea/
+
+# Default dataset folder or symlink
+AVD_Dataset/
+AVD_Dataset

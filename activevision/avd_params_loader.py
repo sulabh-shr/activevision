@@ -49,13 +49,15 @@ class AVDParamsLoader:
         -------
         None
         """
-        #
+        # Load all scenes by default
         if scenes is None or (type(scenes) == list and len(scenes) == 0):
             scenes = ALL_SCENES
 
+        # Check all scenes are valid and stored in default available scenes list
         for scene in scenes:
             assert scene in ALL_SCENES, f'Specified scene not available in default scenes: {scene}'
 
+        # Load parameters for each scene and concatenate
         for scene in scenes:
             path = os.path.join(self.data_root, scene, IMG_STRUCT_FNAME)
             image_structs, scale = load_image_struct(path)
