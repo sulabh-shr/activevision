@@ -13,6 +13,23 @@ to the Active Vision dataset there or you can create a symbolink link to the
 dataset to **activevision/activevision/AVD_Dataset** which is understood as the default
 location in defaults.py
 
+### Default Folder Structure
+```
+$AVD_DATASET/
+  avd_label_map.json
+  Home_001_1/
+    annotations.json
+    image_structs.mat
+    present_istance_names.txt
+    jpg_rgb/
+    high_res_depth
+  ...
+  AVD_Category_Bboxes/
+    Home_001_1/
+      bboxes/
+    ...
+```
+
 ### Visualize bounding boxes and Navigate
 To visualize bounding boxes use the command.  
 `python activevision/viz_nav.py --scene <scene-name> --type <box-type>`  
